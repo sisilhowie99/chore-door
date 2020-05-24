@@ -37,6 +37,32 @@ doorImage3.onclick = () => {
     };
 };
 
+//to reset the game's state to original
+const startRound = () => {
+    //reset door image
+    doorImage1.src = closedDoorPath;
+    doorImage2.src = closedDoorPath;
+    doorImage3.src = closedDoorPath;
+
+    //reset num of unopened doors
+    numClosedDoors = 3;
+
+    //reset startButton's content
+    startButton.innerHTML = 'Good luck!';
+
+    //reset currentlyPlaying
+    currentlyPlaying = true;
+
+    //to randomize the door content again
+    randomChoreDoorGenerator();
+}
+
+startButton.onclick = () => {
+    if(currentlyPlaying === false) {
+        startRound();
+    };
+}
+
 //game over
 const gameOver = status => {
     if(status === 'win') {
@@ -102,4 +128,4 @@ const randomChoreDoorGenerator = () => {
     };
 }
 
-randomChoreDoorGenerator();
+startRound();
