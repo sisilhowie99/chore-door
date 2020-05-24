@@ -8,13 +8,58 @@ let botDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-do
 let beachDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/beach.svg';
 let spaceDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/space.svg';
 
-//when doorImage is clicked to open the door
-doorImage1.onclick = () => {doorImage1.src = openDoor1};
-doorImage2.onclick = () => {doorImage2.src = openDoor2};
-doorImage3.onclick = () => {doorImage3.src = openDoor3};
-
+//other global variables
 let numClosedDoors = 3;
 let openDoor1, openDoor2, openDoor3;
+let closedDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg';
+let startButton = document.getElementById('start');
+
+//when doorImage is clicked to open the door
+doorImage1.onclick = () => {
+    if(!isClicked(doorImage1)) {
+        doorImage1.src = openDoor1;
+        playDoor();
+    };    
+};
+
+doorImage2.onclick = () => {
+    if(!isClicked(doorImage2)) {
+        doorImage2.src = openDoor2;
+        playDoor();
+    };
+};
+
+doorImage3.onclick = () => {
+    if(!isClicked(doorImage3)) {
+        doorImage3.src = openDoor3;
+        playDoor();
+    };
+};
+
+//game over
+const gameOver = status => {
+    if(status === 'win') {
+        startButton.innerHTML = 'You win! Play again?';
+    };
+}
+
+
+//to ensure a door is clickable only once
+const isClicked = door => {
+    if(door.src === closedDoorPath) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//to check the num of remaining door unopened
+const playDoor = () => {
+    numClosedDoors--;
+    if(numClosedDoors === 0) {
+        gameOver('win');
+    }
+}
 
 const randomChoreDoorGenerator = () => {
     const choreDoor = Math.floor(Math.random() * numClosedDoors);
@@ -42,5 +87,3 @@ const randomChoreDoorGenerator = () => {
             break;
     };
 }
-
-randomChoreDoorGenerator();
