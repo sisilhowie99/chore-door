@@ -13,26 +13,27 @@ let numClosedDoors = 3;
 let openDoor1, openDoor2, openDoor3;
 let closedDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg';
 let startButton = document.getElementById('start');
+let currentlyPlaying = true;
 
 //when doorImage is clicked to open the door
 doorImage1.onclick = () => {
-    if(!isClicked(doorImage1)) {
+    if(!isClicked(doorImage1) && currentlyPlaying) {
         doorImage1.src = openDoor1;
-        playDoor();
+        playDoor(doorImage1);
     };    
 };
 
 doorImage2.onclick = () => {
-    if(!isClicked(doorImage2)) {
+    if(!isClicked(doorImage2) && currentlyPlaying) {
         doorImage2.src = openDoor2;
-        playDoor();
+        playDoor(doorImage2);
     };
 };
 
 doorImage3.onclick = () => {
-    if(!isClicked(doorImage3)) {
+    if(!isClicked(doorImage3) && currentlyPlaying) {
         doorImage3.src = openDoor3;
-        playDoor();
+        playDoor(doorImage3);
     };
 };
 
@@ -40,9 +41,20 @@ doorImage3.onclick = () => {
 const gameOver = status => {
     if(status === 'win') {
         startButton.innerHTML = 'You win! Play again?';
+    } else {
+        startButton.innerHTML = 'Game Over! Play again?';
     };
+    currentlyPlaying = false;
 }
 
+//to check if the door has the chorebot
+const isBot = door => {
+    if(door.src === botDoorPath) {
+        return true;
+    } else {
+        return false;
+    };
+}
 
 //to ensure a door is clickable only once
 const isClicked = door => {
@@ -54,10 +66,12 @@ const isClicked = door => {
 }
 
 //to check the num of remaining door unopened
-const playDoor = () => {
+const playDoor = door => {
     numClosedDoors--;
     if(numClosedDoors === 0) {
         gameOver('win');
+    } else if(isBot(door)) {
+        gameOver();
     }
 }
 
@@ -87,3 +101,5 @@ const randomChoreDoorGenerator = () => {
             break;
     };
 }
+
+randomChoreDoorGenerator();
